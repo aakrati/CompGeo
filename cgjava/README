@@ -1,0 +1,371 @@
+The Java code in this directory is an adaptation of the C code
+described in "Computational Geometry in C" (Second Edition).
+It is not written to be comprehensible without the
+explanation in that book.  See http://cs.smith.edu/~orourke/
+for further information.
+
+The Java code is generally a straightforward translation of the C code.
+Variable names were chosen to coincide, with some modifications,
+e.g., all tNames in the C code (t=type) are cNames in the Java code
+(c=class).  Nine programs from the textbook are incorporated into
+a single applet called CompGeom.  Three more programs are left
+as stand-alone Java applications.  The programs are as follows:
+
+Applet Operations:
+Area/Centroid:		Chapter 1, Code 1.5; Exercise 1.6.5.
+Triangulate:		Chapter 1, Code 1.14
+Convex Hull (2D):	Chapter 3, Code 3.8
+Delaunay Triangulation:	Chapter 5, Code 5.2
+SegSegInt:		Chapter 7, Code 7.2.
+In Poly?:		Chapter 7, Code 7.13
+Inter. 2 Conv. Poly:	Chapter 7, Code 7.17
+Minkowski Convolution:	Chapter 8, Code 8.5
+Arm Move:		Chapter 8, Code 8.7
+
+Java Applications:
+Convex Hull (3D):	Chapter 4, Code 4.8
+sphere.c:		Chapter 4, Figure 4.15
+Point-in-Polyhedron:	Chapter 7, Code 7.15
+
+
+All the programs in the CompGeom applet share a common data structure,
+a doubly-linked circular list of points, class cVertexList.  Whether
+these points represent a polygon, a multilink arm, a set of points,
+and so on, is determined by "regime" variables.  These regimes
+control the painting display of those objects:  for example,
+polygons are filled but point sets are not.  A set of editing operations
+work on all regimes, so the user can easily modify the input.
+Specific geometric operations are chosen from a menu, and the
+appropriate result displayed. The code writes extensive diagnostic
+output to the console.
+
+The CompGeom applet is rather complicated, consisting of over 8000 lines
+of code.  Attached below is a list of all the separate java class files,
+and indented beneath each, the method names in those files.
+
+C code written by Joseph O'Rourke.
+Java code written by Irena Pashchenko, Octavia Petrovici, Lilla Zollei,
+and Joseph O'Rourke.
+Last modified: June 1998
+Questions to orourke@cs.smith.edu.
+--------------------------------------------------------------------
+This code is Copyright 1998 by Joseph O'Rourke.  It may be freely
+redistributed in its entirety provided that this copyright notice is
+not removed.
+
+--------------------------------------------------------------------
+--------------------------------------------------------------------
+To compile:
+	javac *.java
+	Make sure that the .class files related to the applet are in 
+	public_html dirrectory.
+To view the applet locally:
+	appletviewer CompGeom.html
+To run applications:
+	java FileNameWithoutExtention
+--------------------------------------------------------------------
+--------------------------------------------------------------------
+
+CLASSES AND THEIR METHODS:
+
+cPointi.java
+  cPointi() 
+  cPointi (int x, int y) 
+  cPointi (int x, int y, int z) 
+  void PrintPoint() 
+  void PrintPoint2()
+  double DistEdgePoint(cPointi a, cPointi b, cPointi c) 
+  double Dist(cPointi p, cPointi p1) 
+  double Dist(cPointi p)
+  cPointi Centroid3( cPointi p1, cPointi p2, cPointi p3)
+  cPointi Centroid3( cPointi p1, cPointi p2, cPointi p3)
+  int Area2(cPointi a, cPointi b, cPointi c)
+  int AreaSign( cPointi a, cPointi b, cPointi c )
+  boolean Left( cPointi a, cPointi b, cPointi c )
+  boolean LeftOn( cPointi a, cPointi b , cPointi c)
+  boolean Collinear( cPointi a, cPointi b, cPointi c)
+  boolean Between( cPointi a, cPointi b, cPointi c)
+  boolean  Intersect( cPointi a, cPointi b, cPointi c, cPointi d )
+  boolean IntersectProp( cPointi a, cPointi b, cPointi c, cPointi d )
+  boolean Xor( boolean x, boolean y )
+  char SegSegInt(cPointi a,cPointi b,cPointi c,cPointi d,cPointd p,cPointd q )
+  char ParallelInt( cPointi a,cPointi b,cPointi c,cPointi d,cPointd p, cPointd q )
+  void Assigndi( cPointd p, cPointi a )
+  boolean Between1( cPointi a, cPointi b, cPointi c )
+  void PrintPoint() 
+
+cPointd.java
+  cPointd()
+  cPointd(int x, int y) 
+  void PrintPoint()
+
+cVertex.java
+  cVertex()
+  cVertex(int i, int j)
+  cVertex(int x, int y, int z)
+  void ResetVertex3D()
+  void PrintVertex()
+  void PrintVertex3D()
+  void PrintVertex3D(int k)
+
+cEdge.java
+  cEdge()
+  void PrintEdge(int n)
+
+cFace.java
+  cFace()
+  void PrintFace(int k)
+
+cDiagonal.java
+  cDiagonal() {
+  cDiagonal(cVertex v1, cVertex v2)
+  void PrintDiagonal(int index) {
+
+cSegSeg.java
+  cSegSeg(cVertexList list)
+  void ClearSegments()
+  char SegSegTopLevel()
+  void DrawSegments(Graphics g, int w, int h)
+  void DrawInters(Graphics g, int w, int h)
+
+cVertexList.java
+  cVertexList()
+  cVertex GetElement(int index)
+  cVertex MakeNullVertex()
+  void InitHead( cVertex h )
+  void ClearVertexList()
+  void InsertBeforeHead( cVertex ver ) 
+  void InsertBefore( cVertex newV , cVertex oldV )
+  void SetVertex(int x, int y)
+  void SetVertex3D(int x, int y, int z)
+  void AddVertex(int x, int y)
+  void ResetVertex( cVertex resV, int x, int y)
+  void ResetVertex( cVertex resV, int x, int y, int vnum, boolean mark)
+  void Delete( cVertex ver )
+  void ListCopy(cVertexList list)
+  void ReverseList()
+  void ReverseListCompletely()
+  cVertex GetNearVertex(int x, int y) 
+  cVertex FindVertex(int x, int y, int w, int h) 
+  cVertex GetEdge(int x, int y)
+  int AreaPoly2()
+  int Ccw ()
+  boolean CheckForConvexity()
+  void Sort2(int lo0, int hi0)
+  private void Swap(cVertex first, cVertex second)
+  private int   Compare2( cVertex tpi, cVertex tpj )
+  void PrintVertices() 
+  void PrintVertices3D()
+  void PrintDetailed()
+  void DrawPoints(Graphics g, int w, int h)
+  void DrawHead(Graphics g, int w, int h)
+  void DrawPolygon(Graphics g, int w, int h, Color inCol, Color vCol, boolean fill)
+  void DrawChain(Graphics g, int w, int h)
+
+cEdgeList.java
+  cEdgeList()
+  cEdge MakeNullEdge()
+  void InitHead( cEdge h )
+  void ClearEdgeList()
+  void InsertBeforeHead( cEdge e )
+  void InsertBefore( cEdge newE , cEdge oldE )
+  void Delete( cEdge e )
+  void PrintEdges()
+
+cFaceList.java
+  cFaceList()
+  cFace MakeNullFace()
+  void InitHead( cFace h )
+  void ClearFaceList()
+  void ClearFaceList()
+  void InsertBeforeHead( cFace e )
+  void InsertBefore( cFace newF , cFace oldF )
+  void Delete( cFace e )
+  void PrintFaces()
+
+cDiagonalList.java
+  cDiagonalList() 
+  void ClearDiagonalList() 
+  private void InitHead( cDiagonal diag )
+  void InsertBeforeHead( cDiagonal diag )
+  private void InsertBefore( cDiagonal newD , cDiagonal old )
+  void PrintDiagonals() 
+  void DrawDiagonals(Graphics g, Color inColor)
+
+cChain.java
+  cChain( cVertexList list) 
+  void ToClose()
+  void SetAChain(cPointd Jk, cPointi target)
+  void SetAChain(cPointd Jk, cPointi target)
+  void ClearChain()
+  double Length (cPointi point1, cPointi point2)
+  double   Length2( cPointi v )
+  boolean Solven(int x, int y)
+  boolean Solve3 (int L1, int L2, int L3, cPointi target0)
+  boolean Solve2( int L1, int L2, cPointi target, cPointd J )
+  int TwoCircles( cPointi c1, int r1, cPointi c2, int r2, cPointd p )
+  int TwoCircles0a( int r1, cPointi c2, int r2, cPointd p )
+  int TwoCircles0b( int r1, cPointi c2, int r2, cPointd p )
+  void  TwoCircles00( int r1, double a2, int r2, cPointd p )
+  cVertexList MakePoints (int lo,int hi1,int hi2,cVertex f,cVertex l,cVertexList copy)
+  void DrawDots(Graphics gContext, int w, int h)
+  void DrawChain(Graphics gContext, int w, int h)
+
+cPolygoni.java
+  cPolygoni(cVertexList list)
+  void ClearPolygon()
+  void ClearDiagList()
+  void ClearListCopy()
+  boolean DiagDrawn()
+  void SetDiagDrawn(boolean bool)
+  int GetInters(int i)
+  char InPoly1(cPointi q)
+  FindCG()
+  boolean Diagonalie( cVertex a, cVertex b )
+  void EarInit()
+  void Triangulate()
+  void ListCopy()
+  boolean InCone( cVertex a, cVertex b )
+  boolean Diagonal( cVertex a, cVertex b )
+  int AreaPoly2()
+  void PrintPoly()
+  void DrawInPoly(Graphics g, cPointi queryP, int CanW, int CanH, int w, int h)
+  void DrawCentroid(Graphics g, int w, int h)
+
+
+ConvConv.java
+  ConvConv() 
+  boolean Start(cVertexList p, cVertexList q)
+  void ClearConvConv()
+  private boolean CheckForConvexity()
+  private void ConvexIntersect( cVertexList P, cVertexList Q, int n, int m )
+  private void InsertInters(double x, double y)
+  cInFlag InOut( cPointd p, cInFlag inflag, int aHB, int bHA )
+  private cVertex Advance( cVertex a, String counter, boolean insid
+  private void    SubVec( cPointi a, cPointi b, cPointi c )
+  private double  Dot( cPointi a, cPointi b )
+  void  InsertSharedSeg( cPointd p, cPointd q )
+  void DrawIntersection(Graphics g, int w, int h, Color fillColor)
+  
+  cInFlag.class
+     cInFlag()
+
+ConvexHull2D.java
+  ConvexHull2D( cVertexList list) 
+  void ClearHull()
+  void RunHull()
+  cVertexList Graham()
+  void   Squash()
+  static void Sort(cVertexList a, int lo0, int hi0) 
+  static void qsort(cVertexList a) 
+  static int Compare(  cVertex tpi, cVertex tpj )
+  void   FindLowest()
+  static void Swap (cVertex first, cVertex second )
+  void Push(cVertex p, cVertexList top)
+  void Pop(cVertexList top)
+  void DrawHull(Graphics gContext, int w, int h)
+
+ConvexHull3D.java
+  static void main(String args[]) throws IOException 
+  ConvexHull3D() throws IOException
+  void ReadVertices() 
+  void ClearLists()
+  private void Print()
+  private void SubVec( int a[], int b[], int c[])
+  private boolean DoubleTriangle()
+  private void ConstructHull()
+  private  boolean AddOne( cVertex p )
+  private int  VolumeSign( cFace f, cVertex p )
+  private int  Volumei( cFace f, cVertex p )
+  private double Volumed( cFace f, cVertex p )
+  private cFace	MakeConeFace( cEdge e, cVertex p )
+  private void	MakeCcw( cFace f, cEdge e, cVertex p )
+  private cFace   MakeFace( cVertex v0, cVertex v1, cVertex v2, cFace fold )
+  private void	CleanUp()
+  private void	CleanEdges()
+  private void	CleanFaces()
+  private void	CleanVertices()
+  private boolean Collinear( cVertex a, cVertex b, cVertex c )
+  private int	Normz( cFace f )
+  private void	Consistency()
+  private void	Convexity()
+  private void	CheckEuler( int V, int E, int F )
+  private void	Checks()
+  private void	PrintOut( cVertex v )
+  private void	PrintVertices()
+  private void  PrintEdges()
+  private void	PrintFaces()
+  private void Swap(cEdge t, cEdge x, cEdge y)
+
+DelaunayTri.java
+  DelaunayTri()
+  void Start(cVertexList listOld)
+  void ClearDelaunay()
+  private void LowerFaces()
+  private void    SubVec( int a[], int b[], int c[])
+  private boolean DoubleTriangle()
+  private void	ConstructHull()
+  private  boolean AddOne( cVertex p )
+  private int  VolumeSign( cFace f, cVertex p )
+  private int  Volumei( cFace f, cVertex p )
+  private double Volumed( cFace f, cVertex p )
+  private cFace	MakeConeFace( cEdge e, cVertex p )
+  private void	MakeCcw( cFace f, cEdge e, cVertex p )
+  private cFace   MakeFace( cVertex v0, cVertex v1, cVertex v2, cFace fold )
+  private void	CleanUp()
+  private void	CleanEdges()
+  private void	CleanFaces()
+  private void	CleanVertices()
+  private boolean Collinear( cVertex a, cVertex b, cVertex c )
+  private int	Normz( cFace f )
+  private void	Consistency()
+  private void	Convexity()
+  private void	CheckEuler( int V, int E, int F )
+  private void	Checks()
+  private void	PrintOut( cVertex v )
+  private void	PrintVertices()
+  private void  PrintEdges()
+  private void	PrintFaces()
+  private void Swap(cEdge t, cEdge x, cEdge y)
+  void	DrawDelaunayTri(Graphics g, int w, int h)
+
+MinkConvol.java
+  MinkConvol()
+  void ClearMinkConvol()
+  boolean Start(cVertexList p, cVertexList q)
+  private boolean CheckForConvexity(cVertexList A, cVertexList B)
+  private int ReadVertices()
+  private void   PrintPoints()
+  private void Qsort()
+  private void   Vectorize()
+  private void    Convolve()
+  private void PutInOutput( int x, int y )
+  private void    SubVec( cPointi a, cPointi b, cPointi c )
+  private cPointi    SubVec( cPointi a, cPointi b )
+  private void    AddVec( cPointi a, cPointi b, cPointi c )
+  private cPointi    AddVec( cPointi a, cPointi b )
+  void DrawMinkConvol(Graphics g, int w, int h)
+
+HelpFrame.java
+  HelpFrame (String nameofstring, String title)
+  private String EditString (String name)
+  private String AdjustParagraph (String name)
+  private String GetString (String name)
+  boolean action(Event evt, Object o)
+  boolean handleEvent(Event evt)
+
+InputWait.java
+  InputWait(GeomCanvas canv, CompGeomTest frame)
+  void run()
+  void waitForEntry()
+
+GeomCanvas.java
+  GeomCanvas(int cw, int ch, CompGeomTest frame)
+	and many other methods related to drawing.
+
+CompGeomTest.java
+  CompGeomTest(Applet a, String doccode)
+
+CompGeomTester.java
+  void init()
+  boolean action(Event e, Object o)
