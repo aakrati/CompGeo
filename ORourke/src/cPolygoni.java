@@ -231,7 +231,17 @@ public class cPolygoni
     cDiagonal diag;
     int   n = listcopy.n;         //number of vertices; shrinks to 3
     boolean earfound = false;     //to prevent infinite loop on improper input
-
+    
+    // initialise DCEL 
+    cPointi[] cpoints = new cPointi[n];
+    cVertex vertex = listcopy.head;
+    for(int i=0;i<n;i++){
+    	cpoints[i] = vertex.v;
+    	vertex = vertex.next;    	
+    }
+    cDCEL dcel = new cDCEL(cpoints);
+    // initialise DCEL end
+    
     EarInit();
 
     /* Each step of outer loop removes one ear. */
@@ -249,6 +259,12 @@ public class cPolygoni
 	  diag = new cDiagonal (v1, v3);
 	  diag.PrintDiagonal(listcopy.n - n);
 	  diaglist.InsertBeforeHead( diag );
+	  
+	  // add diagonal to dcel
+	  cDCEL.Vertex dcelv1 = dcel.getVertex(v1.v);
+	  cDCEL.Vertex dcelv2 = dcel.getVertex(v3.v);
+	  dcel.addHalfEdges(dcelv1, dcelv2);
+	  // end 
 	  
 	  /* Update earity of diagonal endpoints */
 	  v1.ear = Diagonal( v0, v3 );
@@ -272,12 +288,26 @@ public class cPolygoni
       diagdrawn = false;
     } /* end outer while loop */
     
-    cVertex temp = listcopy.head;
-    boolean first = true;
-    while(!first && temp!=listcopy.head){
-    	first=false;
-    	
+    dcel.hertelMehlhorn();
+    
+    int vSize = dcel.vertices.size();
+    cDiagonalList dnew = new cDiagonalList();
+    int i = vSize * 2;
+    while (i < dcel.edges.size()) {
+      
+      // see if removing this edge creates a reflex vertex at the end points
+      cDCEL.HalfEdge e = dcel.edges.get(i);
+   // test the first end point
+      cDCEL.Vertex vert1 = e.origin;
+      cDCEL.Vertex vert2 = e.getNext().origin;
+      cVertex vnew1 = listcopy.FindVertex(vert1.point.x, vert1.point.y, 0, 0);
+      cVertex vnew2 = listcopy.FindVertex(vert2.point.x, vert2.point.y, 0, 0);
+      cDiagonal d = diag = new cDiagonal (vnew1, vnew2);
+	  dnew.InsertBeforeHead( diag );
+	  i+=2;
+      
     }
+    diaglist = dnew;
   }
   
   /*---------------------------------------------------------------------

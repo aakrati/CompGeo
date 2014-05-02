@@ -218,7 +218,7 @@ public class cDCEL {
     @Override
     public String toString() {
       StringBuilder sb = new StringBuilder();
-      sb.append("FACE[")
+      sb.append("FACE["	)
       .append(this.edge)
       .append("]");
       return sb.toString();
@@ -520,7 +520,18 @@ public class cDCEL {
     this.edges.remove(index); // the edge's twin
   }
   
-  
+  /**
+   * Returns the comparable data for this node.
+   * @return T
+   */
+  public Vertex getVertex(cPointi point) {
+	  for(Vertex v:vertices){
+		  if(v.point==point){
+			  return v;
+		  }
+	  }
+    return null;
+  }
   /**
    * Performs the Hertel-Mehlhorn algorithm on the given DCEL assuming that
    * it is a valid triangulation.
