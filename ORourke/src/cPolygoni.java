@@ -226,6 +226,7 @@ public class cPolygoni
    */
   public void Triangulate()
   {
+	System.out.println("inside triaangulate");
     cVertex v0, v1, v2, v3, v4;   // five consecutive vertices 
     cDiagonal diag;
     int   n = listcopy.n;         //number of vertices; shrinks to 3
@@ -270,6 +271,13 @@ public class cPolygoni
 	earfound = false;
       diagdrawn = false;
     } /* end outer while loop */
+    
+    cVertex temp = listcopy.head;
+    boolean first = true;
+    while(!first && temp!=listcopy.head){
+    	first=false;
+    	
+    }
   }
   
   /*---------------------------------------------------------------------

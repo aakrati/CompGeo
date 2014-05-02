@@ -11,8 +11,8 @@ public class CompGeom extends Applet
   public void init()
   {
     start=new Button("Push to start the CompGeom...");
-    w = Integer.parseInt(getParameter("frame width"));
-    h = Integer.parseInt(getParameter("frame height"));
+    w = 630;//Integer.parseInt(getParameter("frame width"));
+    h = 423;//Integer.parseInt(getParameter("frame height"));
     setLayout(new FlowLayout (FlowLayout.CENTER)); 
     setBackground(Color.white);
     add(start);

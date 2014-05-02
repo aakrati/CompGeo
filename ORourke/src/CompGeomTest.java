@@ -43,10 +43,10 @@ public class CompGeomTest extends Frame
       super("Computational Geometry in C: Implemented Algorithms");
       setBackground(Color.lightGray);
 
-      w = Integer.parseInt(a.getParameter("info width"));
-      h = Integer.parseInt(a.getParameter("info height"));
-      cw = Integer.parseInt(a.getParameter("canvas width"));
-      ch = Integer.parseInt(a.getParameter("canvas height"));
+      w = 200;//Integer.parseInt(a.getParameter("info width"));
+      h = 423;//Integer.parseInt(a.getParameter("info height"));
+      cw = 450;//Integer.parseInt(a.getParameter("canvas width"));
+      ch = 423;//Integer.parseInt(a.getParameter("canvas height"));
       
       c = new GeomCanvas(cw,ch,this);
       System.out.println("New GeomCanvas is created");
