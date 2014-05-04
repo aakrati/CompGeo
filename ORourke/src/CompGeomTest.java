@@ -25,7 +25,7 @@ public class CompGeomTest extends Frame
   private MenuBar mbar;
   private Menu close, operations, help;
   private MenuItem term;
-  private MenuItem area, tri, inpoly, segseg, chull, delTri, poly2inters, mink, oarmmove;
+  private MenuItem area, tri, inpoly, segseg, chull, delTri, poly2inters, mink, oarmmove, hertelmehlhorn;
   private Menu hregime, hoperations, hedit, happlications;
   private MenuItem hgeneral, hrgeneral,hrpoly, hrpoints, hrsegments, hrchain, hr2poly, 
                    hogeneral, hoarea, hoinpoly, hoseg, hotriang, hochull2d, hageneral,
@@ -83,6 +83,7 @@ public class CompGeomTest extends Frame
       poly2inters = new MenuItem("Inter of 2 Conv Polys");
       mink = new  MenuItem("Minkowski Convolution");
       oarmmove = new MenuItem ("Move Arm");
+      hertelmehlhorn = new MenuItem("Hertel Mehlhorn");
       help = new Menu ("Help");
       hgeneral = new MenuItem ("General");
       hregime = new Menu ("Regime");
@@ -252,6 +253,7 @@ public class CompGeomTest extends Frame
       operations.add(poly2inters);
       operations.add(mink);
       operations.add(oarmmove);
+      operations.add(hertelmehlhorn);
       mbar.add(close);	      
       mbar.add(operations);
       mbar.add(help);
@@ -452,6 +454,21 @@ public class CompGeomTest extends Frame
 	}
       }
       
+      if(e.target == hertelmehlhorn) {
+
+    	  resetBLabel(bprev);
+    	  bprev = bdummy;
+    	  c.NotToBeCleared(); //boolean variable
+    	  c.NotToDelete();
+    	  c.NotToAdd();
+    	  c.IsNotQuery();
+    	  c.NotToMove();
+    	  c.ArmNotToMove();
+    	  if(c.GetCount() >= 3)			   
+    	    c.TrianPoly2();
+    	
+    	  System.out.println("Hertel Mehlhorn Algorithm");
+      }
       if (e.target == hgeneral) {     // General Help
 	hf = new HelpFrame("greeting", "Greetings from the Authors!");
 	hf.show();

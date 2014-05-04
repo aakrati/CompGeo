@@ -241,8 +241,6 @@ public class cPolygoni
     	cpoints[i] = vertex.v;
     	vertex = vertex.next;    	
     }
-    dcel = new cDCEL(cpoints);
-    // initialise DCEL end
     
     EarInit();
 
@@ -262,11 +260,6 @@ public class cPolygoni
 	  diag.PrintDiagonal(listcopy.n - n);
 	  diaglist.InsertBeforeHead( diag );
 	  
-	  // add diagonal to dcel
-	  cDCEL.Vertex dcelv1 = dcel.getVertex(v1.v);
-	  cDCEL.Vertex dcelv2 = dcel.getVertex(v3.v);
-	  dcel.addHalfEdges(dcelv1, dcelv2);
-	  // end 
 	  
 	  /* Update earity of diagonal endpoints */
 	  v1.ear = Diagonal( v0, v3 );
@@ -290,32 +283,98 @@ public class cPolygoni
       diagdrawn = false;
     } /* end outer while loop */
     
-    dcel.hertelMehlhorn();
-    
-    int vSize = dcel.vertices.size();
-    cDiagonalList dnew = new cDiagonalList();
-    int i = vSize * 2;
-    while (i < dcel.edges.size()) {
-      
-      // see if removing this edge creates a reflex vertex at the end points
-      cDCEL.HalfEdge e = dcel.edges.get(i);
-   // test the first end point
-      cDCEL.Vertex vert1 = e.origin;
-      cDCEL.Vertex vert2 = e.getNext().origin;
-      
-      cVertex vnew1 = listcopy.FindVertex(vert1.point.x, vert1.point.y, 0, 0);
-      cVertex vnew2 = listcopy.FindVertex(vert2.point.x, vert2.point.y, 0, 0);
-      if(vnew1!=null && vnew2!=null){
-    		
-      cDiagonal d = diag = new cDiagonal (vnew1, vnew2);
-	    dnew.InsertBeforeHead( diag );  
-	  }
-      i+=2;
-      
-    }
-    //diaglist = dnew;
   }
   
+  public void Triangulate2() {
+
+		System.out.println("inside heretl mehlhorn");
+	    cVertex v0, v1, v2, v3, v4;   // five consecutive vertices 
+	    cDiagonal diag;
+	    int   n = listcopy.n;         //number of vertices; shrinks to 3
+	    boolean earfound = false;     //to prevent infinite loop on improper input
+	    
+	    // initialise DCEL 
+	    cPointi[] cpoints = new cPointi[n];
+	    cVertex vertex = listcopy.head;
+	    for(int i=0;i<n;i++){
+	    	cpoints[i] = vertex.v;
+	    	vertex = vertex.next;    	
+	    }
+	    dcel = new cDCEL(cpoints);
+	    // initialise DCEL end
+	    
+	    EarInit();
+
+	    /* Each step of outer loop removes one ear. */
+	    while ( n > 3 ) {
+	      /* Inner loop searches for an ear. */
+	      v2 = listcopy.head;
+	      do {
+		if (v2.ear) {
+		  /* Ear found. Fill variables. */
+		  v3 = v2.next; v4 = v3.next;
+		  v1 = v2.prev; v0 = v1.prev;
+		  
+		  /* (v1,v3) is a diagonal */
+		  earfound = true;
+		  diag = new cDiagonal (v1, v3);
+		  diag.PrintDiagonal(listcopy.n - n);
+		  diaglist.InsertBeforeHead( diag );
+		  
+		  // add diagonal to dcel
+		  cDCEL.Vertex dcelv1 = dcel.getVertex(v1.v);
+		  cDCEL.Vertex dcelv2 = dcel.getVertex(v3.v);
+		  dcel.addHalfEdges(dcelv1, dcelv2);
+		  // end 
+		  
+		  /* Update earity of diagonal endpoints */
+		  v1.ear = Diagonal( v0, v3 );
+		  v3.ear = Diagonal( v1, v4 );
+		  
+		  /* Cut off the ear v2 */
+		  v1.next = v3;
+		  v3.prev = v1;
+		  listcopy.head = v3;      /* In case the head was v2. */
+		  n--;
+		  break;   /* out of inner loop; resume outer loop */
+		} /* end if ear found */
+		v2 = v2.next;
+	      } while ( v2 != listcopy.head );
+	      if (!earfound) {
+		System.out.println("Polygon is nonsimple: cannot triangulate");
+		break;
+	      }
+	      else
+		earfound = false;
+	      diagdrawn = false;
+	    } /* end outer while loop */
+	    
+	    dcel.hertelMehlhorn();
+	    
+	    int vSize = dcel.vertices.size();
+	    cDiagonalList dnew = new cDiagonalList();
+	    int i = vSize * 2;
+	    while (i < dcel.edges.size()) {
+	      
+	      // see if removing this edge creates a reflex vertex at the end points
+	      cDCEL.HalfEdge e = dcel.edges.get(i);
+	   // test the first end point
+	      cDCEL.Vertex vert1 = e.origin;
+	      cDCEL.Vertex vert2 = e.getNext().origin;
+	      
+	      cVertex vnew1 = listcopy.FindVertex(vert1.point.x, vert1.point.y, 0, 0);
+	      cVertex vnew2 = listcopy.FindVertex(vert2.point.x, vert2.point.y, 0, 0);
+	      if(vnew1!=null && vnew2!=null){
+	    		
+	      cDiagonal d = diag = new cDiagonal (vnew1, vnew2);
+		    dnew.InsertBeforeHead( diag );  
+		  }
+	      i+=2;
+	      
+	    }
+	    //diaglist = dnew;
+	  
+  }
   /*---------------------------------------------------------------------
    *Creates a copy of list, with each new cell (temp2) pointing to 
    *the same cPointi object as in the corresponding old cell (temp1).
