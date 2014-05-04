@@ -23,6 +23,8 @@
  * OF THE USE OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
 
+import java.awt.Color;
+import java.awt.Graphics;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Stack;
@@ -70,7 +72,7 @@ public class cDCEL {
     public String toString() {
       StringBuilder sb = new StringBuilder();
       sb.append("VERTEX[")
-      .append(this.point)
+      .append(this.point.x +", " + this.point.y)
       .append("]");
       return sb.toString();
     }
@@ -265,6 +267,8 @@ public class cDCEL {
    */
   protected void initialize(cPointi[] points) {
     // get the number of points
+	if(points==null)
+		return;
     int size = points.length;
     
     // we will always have exactly one face at the beginning
@@ -552,17 +556,18 @@ public class cDCEL {
     // diagonals after all the initial diagonals (the initial diagonals are the
     // edges of the original polygon).  We can also skip every other half edge
     // since each edge is stored with its twin in the next index.
-    
+    System.out.println("inside hertel mehlhorn");
     int i = vSize * 2;
     while (i < this.edges.size()) {
       
       // see if removing this edge creates a reflex vertex at the end points
       HalfEdge e = this.edges.get(i);
-      
       // test the first end point
       Vertex v1 = e.origin;
       Vertex v0 = e.getPrevious().origin;
       Vertex v2 = e.twin.next.next.origin;
+      
+      System.out.println("Working on v0, v1, v2"+v0.toString()+", "+v1.toString()+", "+v2.toString());
       
       // check if removing this half edge creates a reflex vertex at the
       // origin vertex of this half edge
@@ -588,6 +593,8 @@ public class cDCEL {
       }
       
       // otherwise we can remove this edge
+      System.out.println("Removed "+v1+", "+e.next.origin);
+      
       this.removeHalfEdges(i, e);
     }
   }
@@ -609,4 +616,25 @@ public class cDCEL {
     
     return true;
   }
+  public void DrawDiagonals(Graphics g, Color inColor)
+  {
+    System.out.println("Drawing diagonals");
+    g.setColor(inColor);
+    if(vertices==null)
+    	return;
+    
+    int i = this.vertices.size() * 2;
+    while (i < this.edges.size()) {
+      
+      // see if removing this edge creates a reflex vertex at the end points
+      HalfEdge e = this.edges.get(i);
+   // test the first end point
+      Vertex vert1 = e.origin;
+      Vertex vert2 = e.getNext().origin;
+      g.drawLine(vert1.point.x, vert1.point.y, vert2.point.x, vert2.point.y);
+      
+      i+=2;
+      
+    }
+  } 
 }

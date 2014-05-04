@@ -35,6 +35,7 @@ public class cPolygoni
   static final int SCREENWIDTH = 400;	//max number of intersections 
   private cVertexList list, listcopy;		//vertices of polygon
   cDiagonalList diaglist;
+  cDCEL dcel;
   cPointd CG;      	       	        //center of gravity;
 					// or pt of intersection
   private int inters[] = new int [SCREENWIDTH];
@@ -47,6 +48,7 @@ public class cPolygoni
     this.list = list;
     listcopy = new cVertexList();
     diaglist = new cDiagonalList();
+    dcel = new cDCEL(null);
     CG = new cPointd(0,0);
     intCount = 0;
     diagdrawn = true;
@@ -239,7 +241,7 @@ public class cPolygoni
     	cpoints[i] = vertex.v;
     	vertex = vertex.next;    	
     }
-    cDCEL dcel = new cDCEL(cpoints);
+    dcel = new cDCEL(cpoints);
     // initialise DCEL end
     
     EarInit();
@@ -300,14 +302,18 @@ public class cPolygoni
    // test the first end point
       cDCEL.Vertex vert1 = e.origin;
       cDCEL.Vertex vert2 = e.getNext().origin;
+      
       cVertex vnew1 = listcopy.FindVertex(vert1.point.x, vert1.point.y, 0, 0);
       cVertex vnew2 = listcopy.FindVertex(vert2.point.x, vert2.point.y, 0, 0);
+      if(vnew1!=null && vnew2!=null){
+    		
       cDiagonal d = diag = new cDiagonal (vnew1, vnew2);
-	  dnew.InsertBeforeHead( diag );
-	  i+=2;
+	    dnew.InsertBeforeHead( diag );  
+	  }
+      i+=2;
       
     }
-    diaglist = dnew;
+    //diaglist = dnew;
   }
   
   /*---------------------------------------------------------------------

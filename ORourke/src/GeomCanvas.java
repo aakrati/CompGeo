@@ -362,7 +362,16 @@ public class GeomCanvas extends Canvas
       if ( trian == false && !Pol.DiagDrawn() )
       {    
 	System.out.println("deleting old triangulation");
-      	Pol.diaglist.DrawDiagonals(g, inColor);
+		
+		Pol.diaglist.DrawDiagonals(g, inColor);
+		try {
+			Thread.sleep(1000);
+		} catch (InterruptedException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+		Pol.dcel.DrawDiagonals(g, Color.green);
+  	
       	Pol.SetDiagDrawn( true );
       	Pol.ClearDiagList();
       }	
@@ -386,7 +395,15 @@ public class GeomCanvas extends Canvas
 	  list.DrawPolygon(gContext, w, h, inColor, Color.blue, true);
 
 	if (trian && Pol.diaglist.head != null) {
+		Pol.dcel.DrawDiagonals(g, Color.green);
+		  
+		try {
+			Thread.sleep(1000);
+		} catch (InterruptedException e) {
+			e.printStackTrace();
+		}
 	  Pol.diaglist.DrawDiagonals(gContext, Color.black);
+	  	
 	  System.out.println("drawing diagonals");
 	}
 
