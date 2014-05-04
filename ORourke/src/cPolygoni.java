@@ -349,29 +349,7 @@ public class cPolygoni
 	      diagdrawn = false;
 	    } /* end outer while loop */
 	    
-	    dcel.hertelMehlhorn();
-	    
-	    int vSize = dcel.vertices.size();
-	    cDiagonalList dnew = new cDiagonalList();
-	    int i = vSize * 2;
-	    while (i < dcel.edges.size()) {
-	      
-	      // see if removing this edge creates a reflex vertex at the end points
-	      cDCEL.HalfEdge e = dcel.edges.get(i);
-	   // test the first end point
-	      cDCEL.Vertex vert1 = e.origin;
-	      cDCEL.Vertex vert2 = e.getNext().origin;
-	      
-	      cVertex vnew1 = listcopy.FindVertex(vert1.point.x, vert1.point.y, 0, 0);
-	      cVertex vnew2 = listcopy.FindVertex(vert2.point.x, vert2.point.y, 0, 0);
-	      if(vnew1!=null && vnew2!=null){
-	    		
-	      cDiagonal d = diag = new cDiagonal (vnew1, vnew2);
-		    dnew.InsertBeforeHead( diag );  
-		  }
-	      i+=2;
-	      
-	    }
+	   // dcel.hertelMehlhorn();
 	    //diaglist = dnew;
 	  
   }

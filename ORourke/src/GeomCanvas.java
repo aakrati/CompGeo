@@ -397,15 +397,12 @@ public class GeomCanvas extends Canvas
 
 	if (trian && Pol.diaglist.head != null) {
 		if(hertelmehlhorntri == true){
-			Pol.dcel.DrawDiagonals(g, Color.green);
-		try {
-			Thread.sleep(1000);
-		} catch (InterruptedException e) {
-			e.printStackTrace();
-		}
+			Pol.dcel.DrawDiagonals(gContext, Color.black);
 		
 		}
+		else{
 	  Pol.diaglist.DrawDiagonals(gContext, Color.black);
+		}
 	  	
 	  System.out.println("drawing diagonals");
 	}

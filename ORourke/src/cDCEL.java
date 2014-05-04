@@ -546,7 +546,7 @@ public class cDCEL {
    * This method is guaranteed to produce a convex decomposition with no more than
    * 4 times the minimum number of convex pieces.
    */
-  public void hertelMehlhorn() {
+  public void hertelMehlhorn(Graphics g) {
     // loop over all the edges and see which we can remove
     int vSize = this.vertices.size();
     
@@ -569,11 +569,28 @@ public class cDCEL {
       
       System.out.println("Working on v0, v1, v2"+v0.toString()+", "+v1.toString()+", "+v2.toString());
       
+      int x=0,y=0;
+    
+      g.setColor(Color.magenta);
+  	g.drawLine(e.getOrigin().point.x, e.getOrigin().point.y, e.getDestination().point.x, e.getDestination().point.y);
+  	while(y!=100000000){
+    while(x!=100000000)
+    	x++;
+    y++;
+  	}
+//  	try {
+//			Thread.sleep(1000);
+//		} catch (InterruptedException ex) {
+//			System.out.println("exception");
+//			ex.printStackTrace();
+//		}
       // check if removing this half edge creates a reflex vertex at the
       // origin vertex of this half edge
       if (isReflex(v0, v1, v2)) {
         // if it did, then we cannot remove this edge
         // so skip the next one and continue
+    	  g.setColor(Color.black);
+    	  	g.drawLine(e.getOrigin().point.x, e.getOrigin().point.y, e.getDestination().point.x, e.getDestination().point.y);
         i+=2;
         continue;
       }
@@ -588,6 +605,8 @@ public class cDCEL {
       if (isReflex(v0, v1, v2)) {
         // if it did, then we cannot remove this edge
         // so skip the next one and continue
+    	  g.setColor(Color.black);
+    	  	g.drawLine(e.getOrigin().point.x, e.getOrigin().point.y, e.getDestination().point.x, e.getDestination().point.y);
         i+=2;
         continue;
       }
@@ -595,6 +614,8 @@ public class cDCEL {
       // otherwise we can remove this edge
       System.out.println("Removed "+v1+", "+e.next.origin);
       
+    	 g.setColor(Color.blue);
+    	  	g.drawLine(e.getOrigin().point.x, e.getOrigin().point.y, e.getDestination().point.x, e.getDestination().point.y);
       this.removeHalfEdges(i, e);
     }
   }
@@ -622,7 +643,6 @@ public class cDCEL {
     g.setColor(inColor);
     if(vertices==null)
     	return;
-    
     int i = this.vertices.size() * 2;
     while (i < this.edges.size()) {
       
@@ -634,7 +654,7 @@ public class cDCEL {
       g.drawLine(vert1.point.x, vert1.point.y, vert2.point.x, vert2.point.y);
       
       i+=2;
-      
     }
+    this.hertelMehlhorn(g);
   } 
 }
