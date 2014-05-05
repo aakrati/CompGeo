@@ -92,29 +92,6 @@ public class cDCEL {
     public HalfEdge getLeaving() {
       return this.leaving;
     }
-    
-    /**
-     * Returns the edge from this node to the given node.
-     * @param node the node to find an edge to
-     * @return {@link DoublyConnectedEdgeList.HalfEdge}
-     */
-    public HalfEdge getEdgeTo(Vertex node) {
-      if (leaving != null) {
-        if (leaving.twin.origin == node) {
-          return leaving;
-        } else {
-          HalfEdge edge = leaving.twin.next;
-          while (edge != leaving) {
-            if (edge.twin.origin == node) {
-              return edge;
-            } else {
-              edge = edge.twin.next;
-            }
-          }
-        }
-      }
-      return null;
-    }
   }
   
   /**
