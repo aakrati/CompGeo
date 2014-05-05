@@ -73,6 +73,11 @@ public class cPolygoni
     diaglist.ClearDiagonalList();
   }
   
+  public void ClearDCEL()
+  {
+    dcel.clearDCEL();
+  }
+  
   public void ClearListCopy()
   {
     listcopy.ClearVertexList();

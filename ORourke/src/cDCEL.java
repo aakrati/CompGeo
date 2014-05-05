@@ -634,4 +634,9 @@ public class cDCEL {
     }
     this.hertelMehlhorn(g);
   } 
+  public void clearDCEL(){
+	  vertices = null;
+	  faces = null;
+	  edges = null;
+  }
 }
